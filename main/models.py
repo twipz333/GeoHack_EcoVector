@@ -22,12 +22,15 @@ class User(models.Model):
             #else:
             #    raise Not
 
+    def get_subscriptions(self):
+        return Subscription.objects.filter(user=self)
+
     def __str__(self):
         return self.uid
 
 class Event(models.Model):
     name = models.CharField(max_length=20, unique_for_date="date")
-    description = models.TextField(max_length=250)
+    description = models.TextField(max_length=250, null=True)
     date = models.DateTimeField("date of event",auto_now=False, auto_now_add=False)
     # attachment = models.FilePathField()
 
