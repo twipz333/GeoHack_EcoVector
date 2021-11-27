@@ -1,1 +1,1 @@
-web: gunicorn geohack.wsgi --log-file -
+web: waitress-serve --port=$PORT MapProject.wsgi:application
