@@ -4,7 +4,7 @@ from .models import Event, User
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
-        fields = ['uid', 'tag', 'tg_uid', 'vk_uid', 'username', 'password']
+        fields = ['uid', 'tg_uid', 'vk_uid', 'username', 'password']
 
 class EventSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
