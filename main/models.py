@@ -4,7 +4,7 @@ from django.db.models.expressions import Value
 # Create your models here.
 class User(models.Model):
     uid = models.CharField(max_length=20, unique=True, null=False, editable=False)
-    tags = models.CharField(max_length=1000, editable=True, default='{}')
+    tags = models.CharField(max_length=1000, editable=True, null=True)
     tg_uid = models.CharField(max_length=9, unique=True, editable=False, null=True)
     vk_uid = models.CharField(max_length=20, unique=True, editable=False,null=True)
     username = models.CharField(max_length=15, unique=True, null=True)

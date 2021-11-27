@@ -2,10 +2,10 @@ import requests
 import json
 from datetime import datetime
 
-payload={'asdad':'nvnxc'}
+payload={}
 headers = {'Content-type': 'application/json'}
 
-r = requests.post('http://localhost:8000/api/hhha/users/',data=json.dumps(payload),headers=headers)
+r = requests.delete('http://localhost:8000/api/hhha/users/',data=json.dumps(payload),headers=headers)
 print(r.content)
 
 datetime.now().strftime()

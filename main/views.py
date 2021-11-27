@@ -18,8 +18,14 @@ def users(request, token):
     
     if request.method == 'GET':
         
-        users = User.objects.all()
-        serializer = UserSerializer(users, many=True)
+        if request.data:
+            if request.data.get('uid'):
+                user = User.objects.get(uid=request.data['uid'])
+                serializer = UserSerializer(user, many=False)
+                return JsonResponse(user)
+        else:
+            users = User.objects.all()
+            serializer = UserSerializer(users, many=True)
         
         return JsonResponse({'users': serializer.data, 'token':token})
     
@@ -35,8 +41,8 @@ def users(request, token):
             user.username = data.get('username')
             user.password = data.get('password')
             
-            if data.get('tag'):
-                user.add_tag(data.get('tag'))
+            # if data.get('tag'):
+            #     user.add_tag(data.get('tag'))
             
             user.save()
             
