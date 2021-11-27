@@ -1,2 +1,3 @@
 from .loginstates import LoginState
 from .create_activitystates import CreateActivityStates
+from .registration_state import RegistrationStates
