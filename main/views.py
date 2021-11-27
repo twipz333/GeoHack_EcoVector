@@ -22,7 +22,7 @@ def users(request, token):
             if request.data.get('uid'):
                 user = User.objects.get(uid=request.data['uid'])
                 serializer = UserSerializer(user, many=False)
-                return JsonResponse(user)
+                return JsonResponse(serializer.data, status=status.HTTP_200_OK)
         else:
             users = User.objects.all()
             serializer = UserSerializer(users, many=True)
