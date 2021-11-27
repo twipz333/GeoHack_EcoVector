@@ -14,19 +14,21 @@ from .serializers import EventSerializer, UserSerializer
 
 # Create your views here.
 @api_view(['GET', 'POST', 'DELETE'])
-def users(request, token):
+def users(request, token, uid=None):
     
     if request.method == 'GET':
-        
-        if request.data.get('uid'):
-            user = User.objects.get(uid=request.data['uid'])
-            serializer = UserSerializer(user, many=False)
-            return JsonResponse(serializer.data, status=status.HTTP_200_OK)
+        if uid:
+            try:
+                user = User.objects.get(uid=uid)
+                serializer = UserSerializer(user, many=False)
+                return JsonResponse(serializer.data, status=status.HTTP_200_OK)
+            except User.DoesNotExist as ex:
+                return JsonResponse({'error': str(ex)}, status=status.HTTP_404_NOT_FOUND)
         else:
             users = User.objects.all()
             serializer = UserSerializer(users, many=True)
         
-        return JsonResponse({'users': serializer.data, 'token':token,'request_data':request.data})
+        return JsonResponse({'users': serializer.data, 'token':token})
     
     elif request.method == 'POST':
 
