@@ -9,4 +9,5 @@ class CreateActivityStates(StatesGroup):
     on_place_of_activity = State()
     on_description_of_activity = State()
     on_blank_creating = State()
+    on_escape_creating = State()
     and_of_creating = State()
