@@ -18,8 +18,7 @@ def users(request, token):
     
     if request.method == 'GET':
         
-        if request.data:
-            if request.data.get('uid'):
+        if request.data.get('uid'):
                 user = User.objects.get(uid=request.data['uid'])
                 serializer = UserSerializer(user, many=False)
                 return JsonResponse(serializer.data, status=status.HTTP_200_OK)
