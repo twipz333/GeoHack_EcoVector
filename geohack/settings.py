@@ -63,6 +63,8 @@ CORS_ALLOWED_ORIGINS = [
     'http://geohack-ecovector.herokuapp.com'
 ]
 
+CORS_ALLOW_ALL_ORIGINS = True
+
 ROOT_URLCONF = 'geohack.urls'
 
 TEMPLATES = [
