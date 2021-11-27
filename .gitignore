@@ -1,36 +1,3 @@
-
-Skip to content
-Pull requests
-Issues
-Marketplace
-Explore
-@twipz333
-twipz333 /
-Map-Project
-Private
-
-2
-0
-
-    0
-
-Code
-Issues 7
-Pull requests
-Projects 1
-Wiki
-Security
-Insights
-
-    Settings
-
-Map-Project/.gitignore
-@twipz333
-twipz333 Изменен gitignore. Загружена бд
-Latest commit a4fca79 on 21 May
-History
-1 contributor
-129 lines (105 sloc) 1.76 KB
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
