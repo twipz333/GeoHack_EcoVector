@@ -58,10 +58,10 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3030',
-    'http://geohack-ecovector.herokuapp.com'
-]
+# CORS_ALLOWED_ORIGINS = [
+#     'http://localhost:3030',
+#     'http://geohack-ecovector.herokuapp.com'
+# ]
 
 CORS_ALLOW_ALL_ORIGINS = True
 
