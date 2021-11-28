@@ -12,7 +12,7 @@ class User(models.Model):
     email = models.EmailField(max_length=30, unique=True, blank=True, null=True, editable=True)
     phone = models.CharField(max_length=11, unique=True, null=True, blank=True, editable=True)
     tags = models.TextField(max_length=1024, unique=False, null=True, blank=False, editable=True, default=r'{}')
-    pref_channel = models.CharField(max_length=4,choices=[('tg','telegramm'),('vk','vkontakte'),('site','site'),('na','not set')], default=False,blank=False, editable=True, null=False)
+    pref_channel = models.CharField(max_length=4,choices=[('tg','telegramm'),('vk','vkontakte'),('site','site'),('na','not set')], default='na',blank=False, editable=True, null=False)
     is_staff = models.BooleanField(blank=False,default=False, null=False, editable=True)
 
 
