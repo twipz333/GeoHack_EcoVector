@@ -12,7 +12,7 @@ class TestUsersGetRequests(unittest.TestCase):
         self.assertTrue(r.ok)
         
     def test_get_exact_good(self):
-        r = requests.get('http://localhost:8000/api/hhha/users/1231',headers=headers)
+        r = requests.get('http://localhost:8000/api/hhha/users/1',headers=headers)
         self.assertTrue(r.ok)
 
     def test_get_exact_bad(self):
@@ -23,20 +23,13 @@ class TestUsersPostRequests(unittest.TestCase):
 
     def test_post(self):
         payload = {
-            'uid': 'test_uid',
+            'id':'1000',
             'tg_uid': 'test_tg_uid',
             'vk_uid': 'test_vk_uid',
             'email': 'test_email',
             'username': 'test_username',
             'password': 'test_password',
             'phone': '89851267355'
-        }
-        r = requests.post('http://localhost:8000/api/hhha/users/', data=payload, headers=headers)
-        self.assertTrue(r.status_code, '201')
-
-    def test_important(self):
-        payload = {
-            'uid': 'test_uid',
         }
         r = requests.post('http://localhost:8000/api/hhha/users/', data=payload, headers=headers)
         self.assertTrue(r.status_code, '201')
@@ -61,14 +54,14 @@ class TestUsersDeleteRequests(unittest.TestCase):
     
     def test_delete(self):
         payload = {
-            'uid': 'test_uid',
+            'id': '1000',
         }
         r = requests.delete('http://localhost:8000/api/hhha/users/', data=payload, headers=headers)
         self.assertTrue(r.status_code, '200')
 
     def test_wrong(self):
         payload = {
-            'uid': 'bad_test_uid',
+            'id': 'bad_test_uid',
         }
         r = requests.delete('http://localhost:8000/api/hhha/users/', data=payload, headers=headers)
         self.assertTrue(r.status_code, '404')            
