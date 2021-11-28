@@ -1,17 +1,25 @@
 from django.core import exceptions
-from rest_framework.response import Response
-from rest_framework.decorators import api_view
-from rest_framework import status
-
 from django.http import HttpResponse, JsonResponse
+
+from rest_framework.response import Response
+from rest_framework.decorators import api_view, authentication_classes
+from rest_framework import status
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication 
 
 from .models import User, Event, Subscription
 from .serializers import EventSerializer, SubscriptionSerializer, UserSerializer
 
 import json
 
+class CsrfExemptSessionAuthentication(SessionAuthentication):
+
+    def enforce_csrf(self, request):
+        return  # To not perform the csrf check previously happening
+
+
 # Create your views here.
 @api_view(['GET', 'POST', 'DELETE'])
+@authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
 def users(request, token, id=None):
     
     if request.method == 'GET':
@@ -72,10 +80,12 @@ def users(request, token, id=None):
             return JsonResponse(data=data, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
+@authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
 def edit_user(request, token):
     pass
 
 @api_view(['GET', 'POST'])
+@authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
 def subscribe_user(request, token, id, event_id=None):
     
     if request.method == 'GET':
@@ -132,6 +142,7 @@ def subscribe_user(request, token, id, event_id=None):
                 return JsonResponse(data={'error':str(ex)}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET','POST','DELETE'])
+@authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
 def subscriptions(request, token, id=None):
     
     if request.method == 'GET':
@@ -193,6 +204,7 @@ def subscriptions(request, token, id=None):
 
 
 @api_view(['GET','POST', 'DELETE'])
+@authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
 def events(request, token, id=None):
     
     if request.method == 'GET':
