@@ -48,9 +48,11 @@ def users(request, token, id=None):
                 user.password = data.get('password')
                 user.email = data.get('email')
                 user.phone = data.get('phone')
+                user.pref_channel = data.get('pref_channel')
+                user.is_staff = data.get('is_staff')
                 
-                if data.get('tag'):
-                    user.add_tags(data.get('tag'))
+                if data.get('tags'):
+                    user.add_tags(data.get('tags'))
                 
                 user.save()
             except Exception as ex:
@@ -79,10 +81,71 @@ def users(request, token, id=None):
         else:
             return JsonResponse(data=data, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['POST'])
+@api_view(['POST', 'GET'])
 @authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
-def edit_user(request, token):
-    pass
+def edit_user(request, token, id):
+    data = request.data
+    if request.method == 'POST':
+        try:
+            user = User.objects.get(id=id)
+            user.update(data)
+            return JsonResponse(data=UserSerializer(user).data, status=status.HTTP_200_OK)
+        except User.DoesNotExist as ex:
+            return JsonResponse(data={'error':str(ex)}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as ex:
+            return JsonResponse(data={'error':str(ex)}, status=status.HTTP_400_BAD_REQUEST)
+    if request.method == 'GET':
+        try:
+            user = User.objects.get(id=id)
+            return JsonResponse(data=UserSerializer(user).data, status=status.HTTP_200_OK)
+        except User.DoesNotExist as ex:
+            return JsonResponse(data={'error':str(ex)}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as ex:
+            return JsonResponse(data={'error':str(ex)}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST', 'GET'])
+@authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
+def edit_event(request, token, id):
+    data = request.data
+    if request.method == 'POST':
+        try:
+            event = Event.objects.get(id=id)
+            event.update(data)
+            return JsonResponse(data=EventSerializer(event).data, status=status.HTTP_200_OK)
+        except Event.DoesNotExist as ex:
+            return JsonResponse(data={'error':str(ex)}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as ex:
+            return JsonResponse(data={'error':str(ex)}, status=status.HTTP_400_BAD_REQUEST)
+    if request.method == 'GET':
+        try:
+            event = Event.objects.get(id=id)
+            return JsonResponse(data=EventSerializer(event).data, status=status.HTTP_200_OK)
+        except Event.DoesNotExist as ex:
+            return JsonResponse(data={'error':str(ex)}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as ex:
+            return JsonResponse(data={'error':str(ex)}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST', 'GET'])
+@authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
+def edit_subscription(request, token, id):
+    data = request.data
+    if request.method == 'POST':
+        try:
+            sub = Subscription.objects.get(id=id)
+            sub.update(data)
+            return JsonResponse(data=SubscriptionSerializer(sub).data, status=status.HTTP_200_OK)
+        except Subscription.DoesNotExist as ex:
+            return JsonResponse(data={'error':str(ex)}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as ex:
+            return JsonResponse(data={'error':str(ex)}, status=status.HTTP_400_BAD_REQUEST)
+    if request.method == 'GET':
+        try:
+            sub = Subscription.objects.get(id=id)
+            return JsonResponse(data=SubscriptionSerializer(sub).data, status=status.HTTP_200_OK)
+        except Subscription.DoesNotExist as ex:
+            return JsonResponse(data={'error':str(ex)}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as ex:
+            return JsonResponse(data={'error':str(ex)}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET', 'POST'])
 @authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
@@ -169,8 +232,8 @@ def subscriptions(request, token, id=None):
                 user = User.objects.get(id=data.get('user_id'))
                 subscription.user = user
                 event = Event.objects.get(id=data.get('event_id'))
-                subscription.event = event
-                            
+                subscription.event = event                            
+
                 subscription.save()
                 
                 return Response(SubscriptionSerializer(subscription).data, status=status.HTTP_201_CREATED)
@@ -231,6 +294,10 @@ def events(request, token, id=None):
                 event.name = data.get('name')
                 event.description = data.get('description')
                 event.date = data.get('date')
+                event.place = data.get('place')
+                event.place = data.get('verified')
+                if data.get('tags'):
+                    event.add_tags(data.get('tags'))
                             
                 event.save()
                 
