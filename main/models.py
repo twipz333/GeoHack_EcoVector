@@ -4,6 +4,10 @@ import json
 
 # Create your models here.
 class User(models.Model):
+    def default_staff():
+        return False
+    def default_pref():
+        return 'na'
     #uid = models.CharField(max_length=20, unique=True, null=True, blank=False, editable=False)
     tg_uid = models.CharField(max_length=9, unique=True, null=True, blank=True, editable=False)
     vk_uid = models.CharField(max_length=20, unique=True, null=True, blank=True, editable=False)
@@ -12,8 +16,10 @@ class User(models.Model):
     email = models.EmailField(max_length=30, unique=True, blank=True, null=True, editable=True)
     phone = models.CharField(max_length=11, unique=True, null=True, blank=True, editable=True)
     tags = models.TextField(max_length=1024, unique=False, null=True, blank=False, editable=True, default=r'{}')
-    pref_channel = models.CharField(max_length=4,choices=[('tg','telegramm'),('vk','vkontakte'),('site','site'),('na','not set')], default='na',blank=True)
-    is_staff = models.BooleanField(default=False, blank=True)
+    pref_channel = models.CharField(max_length=4,choices=[('tg','telegramm'),('vk','vkontakte'),('site','site'),('na','not set')], default=default_pref,blank=True)
+    is_staff = models.BooleanField(blank=True,default=default_staff, null=True)
+
+
 
     def update(self, data: dict):
         #self.uid = data.get('uid') if data.get('uid') else self.uid
@@ -64,10 +70,12 @@ class User(models.Model):
         return self.id
 
 class Event(models.Model):
+    def default_verified():
+        return False
     name = models.CharField(max_length=20, unique_for_date="date")
     description = models.TextField(max_length=250, null=True)
     date = models.CharField(max_length=20, unique=False, blank=True, null=True, editable=True)
-    verified = models.BooleanField(default=False)
+    verified = models.BooleanField(default=default_verified, blank=True, null=True)
     place = models.CharField(max_length=100, unique=False, blank=True, null=True, editable=True)
     tags = models.TextField(max_length=1024, unique=False, null=True, blank=False, editable=True, default=r'{}')
     # attachment = models.FilePathField()
