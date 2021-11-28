@@ -12,12 +12,12 @@ import json
 
 # Create your views here.
 @api_view(['GET', 'POST', 'DELETE'])
-def users(request, token, uid=None):
+def users(request, token, id=None):
     
     if request.method == 'GET':
-        if uid:
+        if id:
             try:
-                user = User.objects.get(uid=uid)
+                user = User.objects.get(id=id)
                 serializer = UserSerializer(user, many=False)
                 return JsonResponse(serializer.data, status=status.HTTP_200_OK)
             except User.DoesNotExist as ex:
@@ -34,11 +34,12 @@ def users(request, token, uid=None):
         if data:
             try:
                 user = User()
-                user.uid = data.get('uid')
                 user.tg_uid = data.get('tg_uid')
                 user.vk_uid = data.get('vk_uid')
                 user.username = data.get('username')
                 user.password = data.get('password')
+                user.email = data.get('email')
+                user.phone = data.get('phone')
                 
                 if data.get('tag'):
                     user.add_tags(data.get('tag'))
@@ -58,10 +59,7 @@ def users(request, token, uid=None):
         if data:
             
             try:
-                if data.get('pk'):
-                    user = User.objects.get(id=data.get('id'))
-                elif data.get('uid'):
-                    user = User.objects.get(uid=data.get('uid'))
+                user = User.objects.get(id=data.get('id'))
                
                 user.delete()
                 
@@ -73,13 +71,17 @@ def users(request, token, uid=None):
         else:
             return JsonResponse(data=data, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['POST'])
+def edit_user(request, token):
+    pass
+
 @api_view(['GET', 'POST'])
-def subscribe_user(request, token, uid, event_id=None):
+def subscribe_user(request, token, id, event_id=None):
     
     if request.method == 'GET':
         if event_id:
             try:
-                user = User.objects.get(uid=uid)
+                user = User.objects.get(id=id)
                 event = Event.objects.get(id=event_id)
                 user.subscribe(event)
                 return JsonResponse(data={}, status=status.HTTP_200_OK)
@@ -91,7 +93,7 @@ def subscribe_user(request, token, uid, event_id=None):
                 return JsonResponse(data={'error':str(ex)}, status=status.HTTP_400_BAD_REQUEST)
         else:
             try:
-                user = User.objects.get(uid=uid)
+                user = User.objects.get(id=id)
                 subs = user.get_subscriptions()
                 return JsonResponse(data={'user':UserSerializer(user).data,'subscriptions':SubscriptionSerializer(subs,many=True)}, status=status.HTTP_200_OK)
             except User.DoesNotExist as ex:
@@ -102,7 +104,7 @@ def subscribe_user(request, token, uid, event_id=None):
     elif request.method == 'POST':
         if event_id:
             try:
-                user = User.objects.get(uid=uid)
+                user = User.objects.get(id=id)
                 event = Event.objects.get(id=event_id)
                 user.subscribe(event)
                 return JsonResponse(data={}, status=status.HTTP_200_OK)
@@ -116,7 +118,7 @@ def subscribe_user(request, token, uid, event_id=None):
             try:
                 data = request.data
                 if data.get('event_id'):
-                    user = User.objects.get(uid=uid)
+                    user = User.objects.get(id=id)
                     event = Event.objects.get(id=data.get('event_id'))
                     user.subscribe(event)
                     return JsonResponse(data={}, status=status.HTTP_200_OK)

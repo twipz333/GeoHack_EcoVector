@@ -5,10 +5,8 @@ import unittest
 
 headers = {'Content-type': 'application/json'}
 
-class TestUsersRequests(unittest.TestCase):
-
-#class GetRequests(unittest.TestCase):
-    
+class TestUsersGetRequests(unittest.TestCase):
+   
     def test_get(self):
         r = requests.get('http://localhost:8000/api/hhha/users/',headers=headers)
         self.assertTrue(r.ok)
@@ -21,7 +19,7 @@ class TestUsersRequests(unittest.TestCase):
         r = requests.get('http://localhost:8000/api/hhha/users/0',headers=headers)
         self.assertTrue(r.status_code, '404')
 
-#class PostRequests(unittest.TestCase):
+class TestUsersPostRequests(unittest.TestCase):
 
     def test_post(self):
         payload = {
@@ -31,6 +29,7 @@ class TestUsersRequests(unittest.TestCase):
             'email': 'test_email',
             'username': 'test_username',
             'password': 'test_password',
+            'phone': '89851267355'
         }
         r = requests.post('http://localhost:8000/api/hhha/users/', data=payload, headers=headers)
         self.assertTrue(r.status_code, '201')
@@ -58,7 +57,7 @@ class TestUsersRequests(unittest.TestCase):
         r = requests.post('http://localhost:8000/api/hhha/users/', data=payload, headers=headers)
         self.assertTrue(r.status_code, '400')
 
-#class DeleteRequests(unittest.TestCase):
+class TestUsersDeleteRequests(unittest.TestCase):
     
     def test_delete(self):
         payload = {
@@ -78,6 +77,7 @@ class TestUsersRequests(unittest.TestCase):
         payload = {}
         r = requests.delete('http://localhost:8000/api/hhha/users/', data=payload, headers=headers)
         self.assertTrue(r.status_code, '400')              
+
 
 if __name__ == '__main__':
     unittest.main()
