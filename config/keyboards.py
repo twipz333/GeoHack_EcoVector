@@ -1,11 +1,20 @@
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardMarkup, KeyboardButton
 import utils.reqtest as get
 
+
 def initialization(message):
     keyboard = InlineKeyboardMarkup()
-    get.get_user_add()
+    tg_uid = get.get_user_add('tg_uid')
     menu_1 = InlineKeyboardButton(text='Помощь', callback_data="menu_1")
-    if message.chat.id != 443808849:  # проверка регистрации
+    flag = False
+    for i in tg_uid:
+        if int(i) != message.chat.id:
+            flag = False
+        else:
+            flag = True
+            break
+
+    if not flag:
         menu_2 = InlineKeyboardButton(text='Регистрация', callback_data="menu_2")
         keyboard.add(menu_1, menu_2)
     else:
@@ -28,3 +37,4 @@ def menu():
         add_activity).add(search_activity).add(add_comment)
 
     return activity_markup
+
