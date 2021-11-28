@@ -48,8 +48,10 @@ def users(request, token, id=None):
                 user.password = data.get('password')
                 user.email = data.get('email')
                 user.phone = data.get('phone')
-                user.pref_channel = data.get('pref_channel')
-                user.is_staff = data.get('is_staff')
+                if data.get('pref_channel'):
+                    user.pref_channel = data.get('pref_channel')
+                if data.get('is_staff'):
+                    user.is_staff = data.get('is_staff')
                 
                 if data.get('tags'):
                     user.add_tags(data.get('tags'))
@@ -297,7 +299,8 @@ def events(request, token, id=None):
                 event.description = data.get('description')
                 event.date = data.get('date')
                 event.place = data.get('place')
-                event.verified = data.get('verified')
+                if data.get('verified'):
+                    event.verified = data.get('verified')
                 if data.get('tags'):
                     event.add_tags(data.get('tags'))
                             

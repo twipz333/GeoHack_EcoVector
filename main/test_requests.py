@@ -17,7 +17,7 @@ class TestUsersGetRequests(unittest.TestCase):
 
     def test_get_exact_bad(self):
         r = requests.get('http://localhost:8000/api/hhha/users/0',headers=headers)
-        self.assertTrue(r.status_code, '404')
+        self.assertEqual(r.status_code, 404)
 
 class TestUsersPostRequests(unittest.TestCase):
 
@@ -31,13 +31,15 @@ class TestUsersPostRequests(unittest.TestCase):
             'password': 'test_password',
             'phone': '89851267355'
         }
-        r = requests.post('http://localhost:8000/api/hhha/users/', data=payload, headers=headers)
-        self.assertTrue(r.status_code, '201')
+        #payload={'tg_uid': tg_uid, 'username': username, 'pref_channel': 'tg', "is_staff": False}
+        r = requests.post('http://localhost:8000/api/hhha/users/', data=json.dumps(payload), headers=headers)
+        print(r.content)
+        self.assertEqual(r.status_code, 201)
 
     def test_bad(self):
         payload = {}
-        r = requests.post('http://localhost:8000/api/hhha/users/', data=payload, headers=headers)
-        self.assertTrue(r.status_code, '400')
+        r = requests.post('http://localhost:8000/api/hhha/users/', data=json.dumps(payload), headers=headers)
+        self.assertEqual(r.status_code, 400)
 
     def test_not_importent(self):
         payload = {
@@ -47,8 +49,8 @@ class TestUsersPostRequests(unittest.TestCase):
             'username': 'test_username',
             'password': 'test_password',
         }
-        r = requests.post('http://localhost:8000/api/hhha/users/', data=payload, headers=headers)
-        self.assertTrue(r.status_code, '400')
+        r = requests.post('http://localhost:8000/api/hhha/users/', data=json.dumps(payload), headers=headers)
+        self.assertEqual(r.status_code, 400)
 
 class TestUsersDeleteRequests(unittest.TestCase):
     
@@ -56,20 +58,20 @@ class TestUsersDeleteRequests(unittest.TestCase):
         payload = {
             'id': '1000',
         }
-        r = requests.delete('http://localhost:8000/api/hhha/users/', data=payload, headers=headers)
-        self.assertTrue(r.status_code, '200')
+        r = requests.delete('http://localhost:8000/api/hhha/users/', data=json.dumps(payload), headers=headers)
+        self.assertEqual(r.status_code, 200)
 
     def test_wrong(self):
         payload = {
             'id': 'bad_test_uid',
         }
-        r = requests.delete('http://localhost:8000/api/hhha/users/', data=payload, headers=headers)
-        self.assertTrue(r.status_code, '404')            
+        r = requests.delete('http://localhost:8000/api/hhha/users/', data=json.dumps(payload), headers=headers)
+        self.assertEqual(r.status_code, 404)            
 
     def test_bad(self):
         payload = {}
-        r = requests.delete('http://localhost:8000/api/hhha/users/', data=payload, headers=headers)
-        self.assertTrue(r.status_code, '400')              
+        r = requests.delete('http://localhost:8000/api/hhha/users/', data=json.dumps(payload), headers=headers)
+        self.assertEqual(r.status_code, 400)              
 
 
 if __name__ == '__main__':
