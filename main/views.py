@@ -29,7 +29,7 @@ def users(request, token, id=None):
                 serializer = UserSerializer(user, many=False)
                 return JsonResponse(serializer.data, status=status.HTTP_200_OK)
             except User.DoesNotExist as ex:
-                return JsonResponse({'error': str(ex)}, status=status.HTTP_404_NOT_FOUND)
+                return JsonResponse({'error': str(ex), 'content':request.content}, status=status.HTTP_404_NOT_FOUND)
         else:
             users = User.objects.all()
             serializer = UserSerializer(users, many=True)
@@ -60,11 +60,11 @@ def users(request, token, id=None):
                 
                 user.save()
             except Exception as ex:
-                return JsonResponse(data={'error': str(ex)}, status=status.HTTP_400_BAD_REQUEST)
+                return JsonResponse(data={'error': str(ex), 'content':request.content}, status=status.HTTP_400_BAD_REQUEST)
             
             return JsonResponse(UserSerializer(user).data, status=status.HTTP_201_CREATED)
         
-        return JsonResponse(data={'error':'Missing arguments!'}, status=status.HTTP_400_BAD_REQUEST)
+        return JsonResponse(data={'error':'Missing arguments!', 'content':request.content}, status=status.HTTP_400_BAD_REQUEST)
     
     elif request.method == 'DELETE':
         
@@ -80,7 +80,7 @@ def users(request, token, id=None):
                 return JsonResponse(data={}, status=status.HTTP_200_OK)
             
             except User.DoesNotExist as ex:
-                return JsonResponse(data={'error':str(ex)}, status=status.HTTP_404_NOT_FOUND)
+                return JsonResponse(data={'error':str(ex), 'content':request.content}, status=status.HTTP_404_NOT_FOUND)
         
         else:
             return JsonResponse(data=data, status=status.HTTP_400_BAD_REQUEST)
@@ -95,17 +95,17 @@ def edit_user(request, token, id):
             user.update(data)
             return JsonResponse(data=UserSerializer(user).data, status=status.HTTP_200_OK)
         except User.DoesNotExist as ex:
-            return JsonResponse(data={'error':str(ex)}, status=status.HTTP_404_NOT_FOUND)
+            return JsonResponse(data={'error':str(ex), 'content':request.content}, status=status.HTTP_404_NOT_FOUND)
         except Exception as ex:
-            return JsonResponse(data={'error':str(ex)}, status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse(data={'error':str(ex), 'content':request.content}, status=status.HTTP_400_BAD_REQUEST)
     if request.method == 'GET':
         try:
             user = User.objects.get(id=id)
             return JsonResponse(data=UserSerializer(user).data, status=status.HTTP_200_OK)
         except User.DoesNotExist as ex:
-            return JsonResponse(data={'error':str(ex)}, status=status.HTTP_404_NOT_FOUND)
+            return JsonResponse(data={'error':str(ex), 'content':request.content}, status=status.HTTP_404_NOT_FOUND)
         except Exception as ex:
-            return JsonResponse(data={'error':str(ex)}, status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse(data={'error':str(ex), 'content':request.content}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST', 'GET'])
 @authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
@@ -117,17 +117,17 @@ def edit_event(request, token, id):
             event.update(data)
             return JsonResponse(data=EventSerializer(event).data, status=status.HTTP_200_OK)
         except Event.DoesNotExist as ex:
-            return JsonResponse(data={'error':str(ex)}, status=status.HTTP_404_NOT_FOUND)
+            return JsonResponse(data={'error':str(ex), 'content':request.content}, status=status.HTTP_404_NOT_FOUND)
         except Exception as ex:
-            return JsonResponse(data={'error':str(ex)}, status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse(data={'error':str(ex), 'content':request.content}, status=status.HTTP_400_BAD_REQUEST)
     if request.method == 'GET':
         try:
             event = Event.objects.get(id=id)
             return JsonResponse(data=EventSerializer(event).data, status=status.HTTP_200_OK)
         except Event.DoesNotExist as ex:
-            return JsonResponse(data={'error':str(ex)}, status=status.HTTP_404_NOT_FOUND)
+            return JsonResponse(data={'error':str(ex), 'content':request.content}, status=status.HTTP_404_NOT_FOUND)
         except Exception as ex:
-            return JsonResponse(data={'error':str(ex)}, status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse(data={'error':str(ex), 'content':request.content}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST', 'GET'])
 @authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
@@ -139,17 +139,17 @@ def edit_subscription(request, token, id):
             sub.update(data)
             return JsonResponse(data=SubscriptionSerializer(sub).data, status=status.HTTP_200_OK)
         except Subscription.DoesNotExist as ex:
-            return JsonResponse(data={'error':str(ex)}, status=status.HTTP_404_NOT_FOUND)
+            return JsonResponse(data={'error':str(ex), 'content':request.content}, status=status.HTTP_404_NOT_FOUND)
         except Exception as ex:
-            return JsonResponse(data={'error':str(ex)}, status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse(data={'error':str(ex), 'content':request.content}, status=status.HTTP_400_BAD_REQUEST)
     if request.method == 'GET':
         try:
             sub = Subscription.objects.get(id=id)
             return JsonResponse(data=SubscriptionSerializer(sub).data, status=status.HTTP_200_OK)
         except Subscription.DoesNotExist as ex:
-            return JsonResponse(data={'error':str(ex)}, status=status.HTTP_404_NOT_FOUND)
+            return JsonResponse(data={'error':str(ex), 'content':request.content}, status=status.HTTP_404_NOT_FOUND)
         except Exception as ex:
-            return JsonResponse(data={'error':str(ex)}, status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse(data={'error':str(ex), 'content':request.content}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET', 'POST'])
 @authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
@@ -165,20 +165,20 @@ def subscribe_user(request, token, id, event_id=None):
                 user.subscribe(event)
                 return JsonResponse(data={}, status=status.HTTP_200_OK)
             except User.DoesNotExist as ex:
-                return JsonResponse(data={'error':str(ex)}, status=status.HTTP_404_NOT_FOUND)
+                return JsonResponse(data={'error':str(ex), 'content':request.content}, status=status.HTTP_404_NOT_FOUND)
             except Event.DoesNotExist as ex:
-                return JsonResponse(data={'error':str(ex)}, status=status.HTTP_404_NOT_FOUND)
+                return JsonResponse(data={'error':str(ex), 'content':request.content}, status=status.HTTP_404_NOT_FOUND)
             except Exception as ex:
-                return JsonResponse(data={'error':str(ex)}, status=status.HTTP_400_BAD_REQUEST)
+                return JsonResponse(data={'error':str(ex), 'content':request.content}, status=status.HTTP_400_BAD_REQUEST)
         else:
             try:
                 user = User.objects.get(id=id)
                 subs = user.get_subscriptions()
                 return JsonResponse(data={'user':UserSerializer(user).data,'subscriptions':SubscriptionSerializer(subs,many=True)}, status=status.HTTP_200_OK)
             except User.DoesNotExist as ex:
-                return JsonResponse(data={'error':str(ex)}, status=status.HTTP_404_NOT_FOUND)
+                return JsonResponse(data={'error':str(ex), 'content':request.content}, status=status.HTTP_404_NOT_FOUND)
             except Exception as ex:
-                return JsonResponse(data={'error':str(ex)}, status=status.HTTP_400_BAD_REQUEST)
+                return JsonResponse(data={'error':str(ex), 'content':request.content}, status=status.HTTP_400_BAD_REQUEST)
 
     elif request.method == 'POST':
         if event_id:
@@ -188,11 +188,11 @@ def subscribe_user(request, token, id, event_id=None):
                 user.subscribe(event)
                 return JsonResponse(data={}, status=status.HTTP_200_OK)
             except User.DoesNotExist as ex:
-                return JsonResponse(data={'error':str(ex)}, status=status.HTTP_404_NOT_FOUND)
+                return JsonResponse(data={'error':str(ex), 'content':request.content}, status=status.HTTP_404_NOT_FOUND)
             except Event.DoesNotExist as ex:
-                return JsonResponse(data={'error':str(ex)}, status=status.HTTP_404_NOT_FOUND)
+                return JsonResponse(data={'error':str(ex), 'content':request.content}, status=status.HTTP_404_NOT_FOUND)
             except Exception as ex:
-                return JsonResponse(data={'error':str(ex)}, status=status.HTTP_400_BAD_REQUEST)
+                return JsonResponse(data={'error':str(ex), 'content':request.content}, status=status.HTTP_400_BAD_REQUEST)
         else:
             try:
                 data = request.data
@@ -202,13 +202,13 @@ def subscribe_user(request, token, id, event_id=None):
                     user.subscribe(event)
                     return JsonResponse(data={}, status=status.HTTP_200_OK)
                 else:
-                    return JsonResponse(data={'error': 'Missing argument event_id'}, status=status.HTTP_400_BAD_REQUEST)
+                    return JsonResponse(data={'error': 'Missing argument event_id', 'content':request.content}, status=status.HTTP_400_BAD_REQUEST)
             except User.DoesNotExist as ex:
-                return JsonResponse(data={'error':str(ex)}, status=status.HTTP_404_NOT_FOUND)
+                return JsonResponse(data={'error':str(ex), 'content':request.content}, status=status.HTTP_404_NOT_FOUND)
             except Event.DoesNotExist as ex:
-                return JsonResponse(data={'error':str(ex)}, status=status.HTTP_404_NOT_FOUND)
+                return JsonResponse(data={'error':str(ex), 'content':request.content}, status=status.HTTP_404_NOT_FOUND)
             except Exception as ex:
-                return JsonResponse(data={'error':str(ex)}, status=status.HTTP_400_BAD_REQUEST)
+                return JsonResponse(data={'error':str(ex), 'content':request.content}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET','POST','DELETE'])
 @authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
@@ -222,7 +222,7 @@ def subscriptions(request, token, id=None):
                 serializer = SubscriptionSerializer(sub, many=False)
                 return JsonResponse(serializer.data, status=status.HTTP_200_OK)
             except Subscription.DoesNotExist as ex:
-                return JsonResponse({'error': str(ex)}, status=status.HTTP_404_NOT_FOUND)
+                return JsonResponse({'error': str(ex), 'content':request.content}, status=status.HTTP_404_NOT_FOUND)
         else:
             subs = Subscription.objects.all()
             serializer = SubscriptionSerializer(subs, many=True)
@@ -244,11 +244,11 @@ def subscriptions(request, token, id=None):
                 
                 return Response(SubscriptionSerializer(subscription).data, status=status.HTTP_201_CREATED)
             except exceptions.ValidationError as ex:
-                return Response(data=str(ex), status=status.HTTP_400_BAD_REQUEST)
+                return Response(data={'error': str(ex), 'content':request.content}, status=status.HTTP_400_BAD_REQUEST)
             except User.DoesNotExist as ex:
-                return Response(data=str(ex), status=status.HTTP_404_NOT_FOUND)
+                return Response(data={'error': str(ex), 'content':request.content}, status=status.HTTP_404_NOT_FOUND)
             except Event.DoesNotExist as ex:
-                return Response(data=str(ex), status=status.HTTP_404_NOT_FOUND)
+                return Response(data={'error': str(ex), 'content':request.content}, status=status.HTTP_404_NOT_FOUND)
 
         
         return Response(data, status=status.HTTP_400_BAD_REQUEST)
@@ -266,7 +266,7 @@ def subscriptions(request, token, id=None):
                 return Response(data={}, status=status.HTTP_302_FOUND)
             
             except Subscription.DoesNotExist as ex:
-                return Response(data=str(ex), status=status.HTTP_404_NOT_FOUND)
+                return Response(data={'error': str(ex), 'content':request.content}, status=status.HTTP_404_NOT_FOUND)
         
         else:
             return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
@@ -284,7 +284,7 @@ def events(request, token, id=None):
                 serializer = EventSerializer(event, many=False)
                 return JsonResponse(serializer.data, status=status.HTTP_200_OK)
             except Event.DoesNotExist as ex:
-                return JsonResponse({'error': str(ex)}, status=status.HTTP_404_NOT_FOUND)
+                return JsonResponse({'error': str(ex), 'content':request.content}, status=status.HTTP_404_NOT_FOUND)
         else:
             events = Event.objects.all()
             serializer = EventSerializer(events, many=True)
@@ -310,7 +310,7 @@ def events(request, token, id=None):
                 
                 return Response(EventSerializer(event).data, status=status.HTTP_201_CREATED)
             except exceptions.ValidationError as ex:
-                return Response(data=str(ex), status=status.HTTP_400_BAD_REQUEST)
+                return Response(data={'error': str(ex), 'content':request.content}, status=status.HTTP_400_BAD_REQUEST)
         
         return Response(data, status=status.HTTP_400_BAD_REQUEST)
     
@@ -328,7 +328,7 @@ def events(request, token, id=None):
                 return Response(data={}, status=status.HTTP_302_FOUND)
             
             except Event.DoesNotExist as ex:
-                return Response(data=str(ex), status=status.HTTP_404_NOT_FOUND)
+                return Response(data={'error': str(ex), 'content':request.content}, status=status.HTTP_404_NOT_FOUND)
         
         else:
             return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
