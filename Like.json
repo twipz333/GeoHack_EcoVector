@@ -1,0 +1,67 @@
+{
+  "buttons": [
+    [
+      {
+        "action": {
+          "type": "callback",
+          "label": "1",
+          "payload": "\"{\\\"button\\\": \\\"18\\\"}\""
+        },
+        "color": "negative"
+      },
+      {
+        "action": {
+          "type": "callback",
+          "label": "2",
+          "payload": "\"{\\\"button\\\": \\\"19\\\"}\""
+        },
+        "color": "negative"
+      },
+      {
+        "action": {
+          "type": "callback",
+          "label": "3",
+          "payload": "\"{\\\"button\\\": \\\"20\\\"}\""
+        },
+        "color": "primary"
+      },
+      {
+        "action": {
+          "type": "callback",
+          "label": "4",
+          "payload": "\"{\\\"button\\\": \\\"21\\\"}\""
+        },
+        "color": "positive"
+      },
+      {
+        "action": {
+          "type": "callback",
+          "label": "5",
+          "payload": "\"{\\\"button\\\": \\\"22\\\"}\""
+        },
+        "color": "positive"
+      }
+    ],
+    [
+      {
+        "action": {
+          "type": "callback",
+          "label": "Оставить комментарий",
+          "payload": "\"{\\\"button\\\": \\\"33\\\"}\""
+        },
+        "color": "positive"
+      }
+    ],
+    [
+      {
+        "action": {
+          "type": "callback",
+          "label": "Назад",
+          "payload": "\"{\\\"button\\\": \\\"23\\\"}\""
+        },
+        "color": "primary"
+      }
+    ]
+  ],
+  "inline": true
+}

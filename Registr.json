@@ -1,0 +1,35 @@
+{
+  "buttons": [
+    [
+      {
+        "action": {
+          "type": "callback",
+          "label": "Регистрация пользователя",
+          "payload": "\"{\\\"button\\\": \\\"13\\\"}\""
+        },
+        "color": "secondary"
+      }
+    ],
+    [
+      {
+        "action": {
+          "type": "callback",
+          "label": "Я уже зарегестрирован",
+          "payload": "\"{\\\"button\\\": \\\"14\\\"}\""
+        },
+        "color": "secondary"
+      }
+    ],
+    [
+      {
+        "action": {
+          "type": "callback",
+          "label": "Отмена",
+          "payload": "\"{\\\"button\\\": \\\"15\\\"}\""
+        },
+        "color": "secondary"
+      }
+    ]
+  ],
+  "inline": true
+}

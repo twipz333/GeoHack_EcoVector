@@ -1,0 +1,33 @@
+{
+  "buttons": [
+    [
+      {
+        "action": {
+          "type": "callback",
+          "label": "Открыть ленту",
+          "payload": "\"{\\\"button\\\": \\\"31\\\"}\""
+        },
+        "color": "primary"
+      },
+      {
+        "action": {
+          "type": "callback",
+          "label": "Поиск",
+          "payload": "\"{\\\"button\\\": \\\"32\\\"}\""
+        },
+        "color": "primary"
+      }
+    ],
+    [
+      {
+        "action": {
+          "type": "callback",
+          "label": "Назад",
+          "payload": "\"{\\\"button\\\": \\\"28\\\"}\""
+        },
+        "color": "primary"
+      }
+    ]
+  ],
+  "inline": true
+}

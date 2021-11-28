@@ -1,4 +1,5 @@
 import string
+import numpy as np
 
 d =   {'а' : ['а', 'a', '@'],
   'б' : ['б', '6', 'b'],
@@ -36,6 +37,8 @@ d =   {'а' : ['а', 'a', '@'],
 }
 global current_row
 
+chet = 1
+
 class Analys():
 
     def distance(a, b): 
@@ -56,9 +59,9 @@ class Analys():
                 current_row[j] = min(add, delete, change)
         return current_row[n]
 
-    def Filter_rude_words(phrase: str):
+    def Filter_rude_words(phrase: str): #фильтр запрещённых слов
         Find =  False
-        words = ["Дикая", "Выдрочка"]
+        words = ["Дикая", "Обезьяна"]
         print("Фильтруемые слова:", words)
         print(phrase)
         #Фраза, которую будем проверять.
@@ -92,4 +95,7 @@ class Analys():
                     print("Найдено", word, "\nПохоже на", fragment)
                     Find =  True
         return(Find)
+
+
+
 

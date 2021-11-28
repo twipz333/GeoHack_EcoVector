@@ -24,7 +24,19 @@
     <Compile Include="analys.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="pop_2.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="parser.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="request.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="vk_campus.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Hello_world.json" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

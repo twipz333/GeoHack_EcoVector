@@ -1,0 +1,36 @@
+{
+  "one_time": false,
+  "buttons": [
+    [
+      {
+        "action": {
+          "type": "callback",
+          "label": "Добавить мероприятие",
+          "payload": "\"{\\\"button\\\": \\\"3\\\"}\""
+        },
+        "color": "positive"
+      }
+    ],
+    [
+      {
+        "action": {
+          "type": "callback",
+          "label": "Cписок мероприятий",
+          "payload": "\"{\\\"button\\\": \\\"4\\\"}\""
+        },
+        "color": "positive"
+      }
+    ],
+    [
+      {
+        "action": {
+          "type": "callback",
+          "label": "Справка",
+          "payload": "\"{\\\"button\\\": \\\"2\\\"}\""
+        },
+        "color": "positive"
+      }
+    ]
+  ],
+  "inline": true
+}

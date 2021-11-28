@@ -1,0 +1,36 @@
+{
+  "one_time": false,
+  "buttons": [
+    [
+      {
+        "action": {
+          "type": "callback",
+          "label": "Добавить тег",
+          "payload": "\"{\\\"button\\\": \\\"6\\\"}\""
+        },
+        "color": "secondary"
+      }
+    ],
+    [
+      {
+        "action": {
+          "type": "callback",
+          "label": "Список тегов",
+          "payload": "\"{\\\"button\\\": \\\"7\\\"}\""
+        },
+        "color": "secondary"
+      }
+    ],
+    [
+      {
+        "action": {
+          "type": "callback",
+          "label": "Создать новый тег",
+          "payload": "\"{\\\"button\\\": \\\"8\\\"}\""
+        },
+        "color": "secondary"
+      }
+    ]
+  ],
+  "inline": true
+}
