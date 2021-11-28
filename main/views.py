@@ -295,7 +295,7 @@ def events(request, token, id=None):
                 event.description = data.get('description')
                 event.date = data.get('date')
                 event.place = data.get('place')
-                event.place = data.get('verified')
+                event.verified = data.get('verified')
                 if data.get('tags'):
                     event.add_tags(data.get('tags'))
                             
