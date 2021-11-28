@@ -12,8 +12,8 @@ class User(models.Model):
     email = models.EmailField(max_length=30, unique=True, blank=True, null=True, editable=True)
     phone = models.CharField(max_length=11, unique=True, null=True, blank=True, editable=True)
     tags = models.TextField(max_length=1024, unique=False, null=True, blank=False, editable=True, default=r'{}')
-    pref_channel = models.CharField(max_length=4,choices=[('tg','telegramm'),('vk','vkontakte'),('site','site'),('na','not set')], default='na')
-    is_staff = models.BooleanField(default=False)
+    pref_channel = models.CharField(max_length=4,choices=[('tg','telegramm'),('vk','vkontakte'),('site','site'),('na','not set')], default='na',blank=True)
+    is_staff = models.BooleanField(default=False, blank=True)
 
     def update(self, data: dict):
         #self.uid = data.get('uid') if data.get('uid') else self.uid

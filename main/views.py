@@ -149,6 +149,8 @@ def edit_subscription(request, token, id):
 
 @api_view(['GET', 'POST'])
 @authentication_classes((CsrfExemptSessionAuthentication, BasicAuthentication))
+#/users/<id>/subscribe/<event_id>
+#/users/<event_id>/subscribe/<id>
 def subscribe_user(request, token, id, event_id=None):
     
     if request.method == 'GET':
