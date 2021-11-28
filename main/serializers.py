@@ -4,7 +4,7 @@ from .models import Event, Subscription, User
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'tg_uid', 'vk_uid', 'username', 'password','email', 'phone', 'tags', 'pref_channel', 'is_staff']
+        fields = ['id', 'tg_uid', 'vk_uid', 'username', 'password','email', 'phone', 'tags', 'pref_channel', 'is_staff', 'balance']
 
 class EventSerializer(serializers.ModelSerializer):
     class Meta:

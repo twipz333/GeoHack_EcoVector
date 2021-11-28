@@ -48,6 +48,8 @@ def users(request, token, id=None):
                 user.password = data.get('password')
                 user.email = data.get('email')
                 user.phone = data.get('phone')
+                if data.get('balance'):
+                    user.balance = data.get('balance')
                 if data.get('pref_channel'):
                     user.pref_channel = data.get('pref_channel')
                 if data.get('is_staff'):

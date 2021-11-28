@@ -14,7 +14,7 @@ class User(models.Model):
     tags = models.TextField(max_length=1024, unique=False, null=True, blank=False, editable=True, default=r'{}')
     pref_channel = models.CharField(max_length=4,choices=[('tg','telegramm'),('vk','vkontakte'),('site','site'),('na','not set')], default='na',blank=False, editable=True, null=False)
     is_staff = models.BooleanField(blank=False,default=False, null=False, editable=True)
-
+    balance = models.PositiveIntegerField(max_length=999999, blank=False, null=True, default=0, editable=True)
 
 
     def update(self, data: dict):
@@ -28,6 +28,7 @@ class User(models.Model):
         self.tag = data.get('tag') if data.get('tag') else self.tag
         self.pref_channel = data.get('pref_channel') if data.get('pref_channel') else self.pref_channel
         self.is_staff = data.get('is_staff') if data.get('is_staff') else self.is_staff
+        self.balance = data.get('balance') if data.get('balance') else self.balance
         self.save()
 
     def subscribe(self, event):
