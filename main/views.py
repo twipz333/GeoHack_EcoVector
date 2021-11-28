@@ -8,6 +8,8 @@ from django.http import HttpResponse, JsonResponse
 from .models import User, Event, Subscription
 from .serializers import EventSerializer, SubscriptionSerializer, UserSerializer
 
+import json
+
 # Create your views here.
 @api_view(['GET', 'POST', 'DELETE'])
 def users(request, token, uid=None):
@@ -30,22 +32,24 @@ def users(request, token, uid=None):
 
         data = request.data       
         if data:
+            try:
+                user = User()
+                user.uid = data.get('uid')
+                user.tg_uid = data.get('tg_uid')
+                user.vk_uid = data.get('vk_uid')
+                user.username = data.get('username')
+                user.password = data.get('password')
+                
+                if data.get('tag'):
+                    user.add_tags(data.get('tag'))
+                
+                user.save()
+            except Exception as ex:
+                return JsonResponse(data={'error': str(ex)}, status=status.HTTP_400_BAD_REQUEST)
             
-            user = User()
-            user.uid = data.get('uid')
-            user.tg_uid = data.get('tg_uid')
-            user.vk_uid = data.get('vk_uid')
-            user.username = data.get('username')
-            user.password = data.get('password')
-            
-            # if data.get('tag'):
-            #     user.add_tag(data.get('tag'))
-            
-            user.save()
-            
-            return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED)
+            return JsonResponse(UserSerializer(user).data, status=status.HTTP_201_CREATED)
         
-        return Response(data, status=status.HTTP_400_BAD_REQUEST)
+        return JsonResponse(data={'error':'Missing arguments!'}, status=status.HTTP_400_BAD_REQUEST)
     
     elif request.method == 'DELETE':
         
@@ -55,31 +59,75 @@ def users(request, token, uid=None):
             
             try:
                 if data.get('pk'):
-                    user = User.objects.get(pk=data.get('pk'))
+                    user = User.objects.get(id=data.get('id'))
                 elif data.get('uid'):
                     user = User.objects.get(uid=data.get('uid'))
                
                 user.delete()
                 
-                return Response(data={}, status=status.HTTP_302_FOUND)
+                return JsonResponse(data={}, status=status.HTTP_200_OK)
             
             except User.DoesNotExist as ex:
-                return Response(data=str(ex), status=status.HTTP_404_NOT_FOUND)
+                return JsonResponse(data={'error':str(ex)}, status=status.HTTP_404_NOT_FOUND)
         
         else:
-            return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse(data=data, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['GET'])
+@api_view(['GET', 'POST'])
 def subscribe_user(request, token, uid, event_id=None):
     
-    if event_id:
-        try:
-            user = User.objects.get(uid=uid)
-            event = Event.objects.get(id=event_id)
-            user.subscribe(event)
-            return Response(data={}, status=status.HTTP_200_OK)
-        except Exception as ex:
-            return Response(data=str(ex), status=status.HTTP_400_BAD_REQUEST)
+    if request.method == 'GET':
+        if event_id:
+            try:
+                user = User.objects.get(uid=uid)
+                event = Event.objects.get(id=event_id)
+                user.subscribe(event)
+                return JsonResponse(data={}, status=status.HTTP_200_OK)
+            except User.DoesNotExist as ex:
+                return JsonResponse(data={'error':str(ex)}, status=status.HTTP_404_NOT_FOUND)
+            except Event.DoesNotExist as ex:
+                return JsonResponse(data={'error':str(ex)}, status=status.HTTP_404_NOT_FOUND)
+            except Exception as ex:
+                return JsonResponse(data={'error':str(ex)}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            try:
+                user = User.objects.get(uid=uid)
+                subs = user.get_subscriptions()
+                return JsonResponse(data={'user':UserSerializer(user).data,'subscriptions':SubscriptionSerializer(subs,many=True)}, status=status.HTTP_200_OK)
+            except User.DoesNotExist as ex:
+                return JsonResponse(data={'error':str(ex)}, status=status.HTTP_404_NOT_FOUND)
+            except Exception as ex:
+                return JsonResponse(data={'error':str(ex)}, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'POST':
+        if event_id:
+            try:
+                user = User.objects.get(uid=uid)
+                event = Event.objects.get(id=event_id)
+                user.subscribe(event)
+                return JsonResponse(data={}, status=status.HTTP_200_OK)
+            except User.DoesNotExist as ex:
+                return JsonResponse(data={'error':str(ex)}, status=status.HTTP_404_NOT_FOUND)
+            except Event.DoesNotExist as ex:
+                return JsonResponse(data={'error':str(ex)}, status=status.HTTP_404_NOT_FOUND)
+            except Exception as ex:
+                return JsonResponse(data={'error':str(ex)}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            try:
+                data = request.data
+                if data.get('event_id'):
+                    user = User.objects.get(uid=uid)
+                    event = Event.objects.get(id=data.get('event_id'))
+                    user.subscribe(event)
+                    return JsonResponse(data={}, status=status.HTTP_200_OK)
+                else:
+                    return JsonResponse(data={'error': 'Missing argument event_id'}, status=status.HTTP_400_BAD_REQUEST)
+            except User.DoesNotExist as ex:
+                return JsonResponse(data={'error':str(ex)}, status=status.HTTP_404_NOT_FOUND)
+            except Event.DoesNotExist as ex:
+                return JsonResponse(data={'error':str(ex)}, status=status.HTTP_404_NOT_FOUND)
+            except Exception as ex:
+                return JsonResponse(data={'error':str(ex)}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET','POST','DELETE'])
 def subscriptions(request, token, id=None):

@@ -1,13 +1,17 @@
 from django.db import models
 from django.db.models.expressions import Value
+import json
 
 # Create your models here.
 class User(models.Model):
-    uid = models.CharField(max_length=20, unique=True, null=False, editable=False)
-    tg_uid = models.CharField(max_length=9, unique=True, editable=False, null=True)
-    vk_uid = models.CharField(max_length=20, unique=True, editable=False,null=True)
-    username = models.CharField(max_length=15, unique=True, null=True)
-    password = models.CharField(max_length=200, null=True)
+    uid = models.CharField(max_length=20, unique=True, null=True, blank=False, editable=False)
+    tg_uid = models.CharField(max_length=9, unique=True, null=True, blank=True, editable=False)
+    vk_uid = models.CharField(max_length=20, unique=True, null=True, blank=True, editable=False)
+    username = models.CharField(max_length=15, unique=True, null=True, blank=True, editable=True)
+    password = models.CharField(max_length=200, unique=False, null=True, blank=True, editable=True)
+    email = models.EmailField(max_length=30, unique=True, blank=True, null=True, editable=True)
+    phone = models.CharField(max_length=11, unique=True, null=True, blank=True, editable=True)
+    tag = models.CharField(max_length=1024, unique=False, null=True, blank=False, editable=True, default=r'{}')
 
     def subscribe(self, event):
         if isinstance(event, Event):
@@ -24,6 +28,22 @@ class User(models.Model):
 
     def get_subscriptions(self):
         return Subscription.objects.filter(user=self)
+
+    def add_tags(self, tags):
+        _tags = json.loads(self.tag)
+        for k, v in tags:
+            _tags[k] = v
+        self.tag = json.dumps(_tags)
+
+    def remove_tags(self, tags):
+        _tags = json.loads(self.tag)
+        for k in tags:
+            if k in _tags.keys():
+                del _tags[k]
+        self.tag = json.dumps(_tags)
+
+    def get_tags(self):
+        return json.load(self.tag)
 
     def __str__(self):
         return self.uid

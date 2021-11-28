@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-n%ci6hnlhhxat10$lu)lku)k2we+8#14z&*c(ty%75a$^+d^gb
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'geohack-ecovector.herokuapp.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'geohack-ecovector.herokuapp.com', 'localhost']
 
 
 # Application definition
