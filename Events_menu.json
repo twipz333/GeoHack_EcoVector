@@ -1,0 +1,41 @@
+{
+  "buttons": [
+    [
+      {
+        "action": {
+          "type": "callback",
+          "label": "Не интересно",
+          "payload": "\"{\\\"button\\\": \\\"17\\\"}\""
+        },
+        "color": "negative"
+      },
+      {
+        "action": {
+          "type": "callback",
+          "label": "Пойду!",
+          "payload": "\"{\\\"button\\\": \\\"16\\\"}\""
+        },
+        "color": "positive"
+      }
+    ],
+    [
+      {
+        "action": {
+          "type": "callback",
+          "label": "Назад",
+          "payload": "\"{\\\"button\\\": \\\"28\\\"}\""
+        },
+        "color": "primary"
+      },
+      {
+        "action": {
+          "type": "callback",
+          "label": "Оценить",
+          "payload": "\"{\\\"button\\\": \\\"30\\\"}\""
+        },
+        "color": "primary"
+      }
+    ]
+  ],
+  "inline": true
+}
